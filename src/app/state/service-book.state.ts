@@ -105,6 +105,20 @@ export class RemoveRecord {
   constructor(public readonly recordId: string) {}
 }
 
+export class UpdateRecord {
+  static readonly type = '[Record] Update';
+  constructor(
+    public readonly recordId: string,
+    public readonly payload: {
+      title: string;
+      date: string;
+      odometer: number;
+      cost: number;
+      notes: string;
+    }
+  ) {}
+}
+
 export class ShareVehicle {
   static readonly type = '[Share] Add';
   constructor(public readonly email: string) {}
@@ -473,6 +487,44 @@ export class ServiceBookState {
     appendNotification(
       ctx,
       $localize`:@@toastRecordRemoved:Szervizbejegyzés törölve.`,
+      'success'
+    );
+  }
+
+  @Action(UpdateRecord)
+  updateRecord(ctx: StateContext<ServiceBookStateModel>, action: UpdateRecord): void {
+    const state = ctx.getState();
+
+    if (!action.payload.title || !action.payload.date) {
+      ctx.patchState({
+        recordMessage: $localize`:@@recordRequired:A megnevezés és a dátum kötelező.`
+      });
+      appendNotification(
+        ctx,
+        $localize`:@@toastRecordRequired:A megnevezés és a dátum kötelező.`,
+        'error'
+      );
+      return;
+    }
+
+    ctx.patchState({
+      records: state.records.map((record) =>
+        record.id === action.recordId
+          ? {
+              ...record,
+              title: action.payload.title.trim(),
+              date: action.payload.date,
+              odometer: Number(action.payload.odometer),
+              cost: Number(action.payload.cost),
+              notes: action.payload.notes.trim()
+            }
+          : record
+      ),
+      recordMessage: ''
+    });
+    appendNotification(
+      ctx,
+      $localize`:@@toastRecordUpdated:Szervizbejegyzés frissítve.`,
       'success'
     );
   }

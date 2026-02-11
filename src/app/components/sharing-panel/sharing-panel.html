@@ -5,17 +5,21 @@
       Ossza meg ezt a járművet más fiókokkal a közös szerkesztéshez.
     </p>
     @if (canShareSelected$ | async) {
-      <form class="mb-3" (ngSubmit)="shareVehicle()">
+      <form class="mb-3" [formGroup]="shareForm" (ngSubmit)="shareVehicle()">
         <label class="form-label" i18n="@@inviteLabel">Meghívás emailben</label>
         <div class="d-flex gap-2">
           <input
             class="form-control"
-            name="shareEmail"
-            [(ngModel)]="shareEmail"
+            formControlName="email"
             type="email"
-            placeholder="riley@example.com"
+            placeholder="Példa: riley@example.com"
             i18n-placeholder="@@shareEmailPlaceholder"
           />
+          @if (shareForm.get('email')?.touched && shareForm.get('email')?.invalid) {
+            <div class="text-warning small mt-2" i18n="@@shareEmailError">
+              Adjon meg egy érvényes email címet.
+            </div>
+          }
           <button class="btn btn-outline-dark" type="submit" i18n="@@shareButton">
             Megosztás
           </button>

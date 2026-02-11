@@ -6,30 +6,38 @@
         <p class="text-muted" i18n="@@signInSubtitle">
           Érje el járműveit és a megosztott szervizkönyveket.
         </p>
-        <form class="mt-4" (ngSubmit)="login()">
+        <form class="mt-4" [formGroup]="loginForm" (ngSubmit)="login()">
           <div class="mb-3">
             <label class="form-label" i18n="@@emailLabel">Email</label>
             <input
               class="form-control"
-              name="loginEmail"
-              [(ngModel)]="loginEmail"
+              formControlName="email"
               type="email"
-              placeholder="alex@example.com"
+              placeholder="Példa: alex@example.com"
               i18n-placeholder="@@loginEmailPlaceholder"
               required
             />
+            @if (loginForm.get('email')?.touched && loginForm.get('email')?.invalid) {
+              <div class="text-warning small mt-1" i18n="@@loginEmailError">
+                Adjon meg egy érvényes email címet.
+              </div>
+            }
           </div>
           <div class="mb-3">
             <label class="form-label" i18n="@@passwordLabel">Jelszó</label>
             <input
               class="form-control"
-              name="loginPassword"
-              [(ngModel)]="loginPassword"
+              formControlName="password"
               type="password"
-              placeholder="demo123"
+              placeholder="Példa: demo123"
               i18n-placeholder="@@loginPasswordPlaceholder"
               required
             />
+            @if (loginForm.get('password')?.touched && loginForm.get('password')?.invalid) {
+              <div class="text-warning small mt-1" i18n="@@loginPasswordError">
+                A jelszó megadása kötelező.
+              </div>
+            }
           </div>
           <button class="btn btn-dark w-100" type="submit" i18n="@@signInButton">
             Belépés
@@ -45,42 +53,54 @@
         <p class="text-muted" i18n="@@registerSubtitle">
           Indítsa el saját szervizkönyvét, és hívjon meg együttműködőket.
         </p>
-        <form class="mt-4" (ngSubmit)="register()">
+        <form class="mt-4" [formGroup]="registerForm" (ngSubmit)="register()">
           <div class="mb-3">
             <label class="form-label" i18n="@@nameLabel">Név</label>
             <input
               class="form-control"
-              name="registerName"
-              [(ngModel)]="registerName"
+              formControlName="name"
               type="text"
-              placeholder="Kiss Andrea"
+              placeholder="Példa: Kiss Andrea"
               i18n-placeholder="@@registerNamePlaceholder"
               required
             />
+            @if (registerForm.get('name')?.touched && registerForm.get('name')?.invalid) {
+              <div class="text-warning small mt-1" i18n="@@registerNameError">
+                A név megadása kötelező.
+              </div>
+            }
           </div>
           <div class="mb-3">
             <label class="form-label" i18n="@@registerEmailLabel">Email</label>
             <input
               class="form-control"
-              name="registerEmail"
-              [(ngModel)]="registerEmail"
+              formControlName="email"
               type="email"
-              placeholder="andrea@example.com"
+              placeholder="Példa: andrea@example.com"
               i18n-placeholder="@@registerEmailPlaceholder"
               required
             />
+            @if (registerForm.get('email')?.touched && registerForm.get('email')?.invalid) {
+              <div class="text-warning small mt-1" i18n="@@registerEmailError">
+                Adjon meg egy érvényes email címet.
+              </div>
+            }
           </div>
           <div class="mb-3">
             <label class="form-label" i18n="@@registerPasswordLabel">Jelszó</label>
             <input
               class="form-control"
-              name="registerPassword"
-              [(ngModel)]="registerPassword"
+              formControlName="password"
               type="password"
-              placeholder="Hozzon létre jelszót"
+              placeholder="Példa: Hozzon létre jelszót"
               i18n-placeholder="@@registerPasswordPlaceholder"
               required
             />
+            @if (registerForm.get('password')?.touched && registerForm.get('password')?.invalid) {
+              <div class="text-warning small mt-1" i18n="@@registerPasswordError">
+                A jelszó megadása kötelező.
+              </div>
+            }
           </div>
           <button class="btn btn-outline-dark w-100" type="submit" i18n="@@registerButton">
             Regisztráció

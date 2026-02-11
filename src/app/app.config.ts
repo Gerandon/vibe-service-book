@@ -1,4 +1,5 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
+import { provideHttpClient, withJsonpSupport } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
 import { withNgxsReduxDevtoolsPlugin } from '@ngxs/devtools-plugin';
 import { StorageOption, withNgxsStoragePlugin } from '@ngxs/storage-plugin';
@@ -11,6 +12,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
+    provideHttpClient(withJsonpSupport()),
     provideStore(
       [ServiceBookState],
       withNgxsReduxDevtoolsPlugin(),

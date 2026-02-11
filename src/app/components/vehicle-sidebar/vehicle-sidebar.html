@@ -9,12 +9,12 @@
     <div class="list-group list-group-flush">
       @if (currentUser$ | async; as currentUser) {
         @for (vehicle of (vehicles$ | async) ?? []; track vehicle.id) {
-        <button
-          type="button"
-          class="list-group-item list-group-item-action d-flex align-items-start gap-3 vehicle-item"
-          [class.active]="(selectedVehicleId$ | async) === vehicle.id"
-          (click)="selectVehicle(vehicle.id)"
-        >
+          <button
+            type="button"
+            class="list-group-item list-group-item-action d-flex align-items-start gap-3 vehicle-item"
+            [class.active]="(selectedVehicleId$ | async) === vehicle.id"
+            (click)="selectVehicle(vehicle.id)"
+          >
             <div class="vehicle-dot"></div>
             <div class="flex-grow-1">
               <div class="d-flex justify-content-between align-items-center gap-2">
@@ -55,42 +55,73 @@
 <div class="card shadow-sm border-0">
   <div class="card-body">
     <h2 class="h5 mb-3" i18n="@@addVehicleTitle">Jármű hozzáadása</h2>
-    <form (ngSubmit)="addVehicle()">
+    <form [formGroup]="newVehicleForm" (ngSubmit)="addVehicle()">
       <div class="mb-3">
         <label class="form-label" i18n="@@nicknameLabel">Becenév</label>
         <input
           class="form-control"
-          name="nickname"
-          [(ngModel)]="newVehicle.nickname"
+          formControlName="nickname"
           type="text"
-          placeholder="Hétvégi túra"
+          placeholder="Példa: Saját"
           i18n-placeholder="@@nicknamePlaceholder"
         />
       </div>
       <div class="row g-2">
-        <div class="col-6">
+        <div class="col-6 position-relative">
           <label class="form-label" i18n="@@makeLabel">Márka</label>
           <input
             class="form-control"
-            name="make"
-            [(ngModel)]="newVehicle.make"
+            formControlName="make"
             type="text"
-            placeholder="Mazda"
+            placeholder="Példa: Mazda"
             i18n-placeholder="@@makePlaceholder"
             required
+            (input)="onMakeInput()"
+            (focus)="onMakeFocus()"
+            (blur)="onMakeBlur()"
+            autocomplete="off"
           />
+          @if (newVehicleForm.get('make')?.touched && newVehicleForm.get('make')?.invalid) {
+            <div class="text-warning small mt-2" i18n="@@makeFieldError">
+              A márka megadása kötelező.
+            </div>
+          }
+          @if (showMakeDropdown) {
+            @if (filteredMakes$ | async; as filteredMakes) {
+              @if (filteredMakes.length > 0) {
+                <div class="list-group make-dropdown shadow-sm">
+                  @for (make of filteredMakes; track make) {
+                    <button
+                      type="button"
+                      class="list-group-item list-group-item-action"
+                      (mousedown)="selectMake(make)"
+                    >
+                      {{ make }}
+                    </button>
+                  }
+                </div>
+              }
+            }
+          }
+          @if (makeValidationMessage) {
+            <div class="text-warning small mt-2">{{ makeValidationMessage }}</div>
+          }
         </div>
         <div class="col-6">
           <label class="form-label" i18n="@@modelLabel">Modell</label>
           <input
             class="form-control"
-            name="model"
-            [(ngModel)]="newVehicle.model"
+            formControlName="model"
             type="text"
-            placeholder="CX-5"
+            placeholder="Példa: CX-5"
             i18n-placeholder="@@modelPlaceholder"
             required
           />
+          @if (newVehicleForm.get('model')?.touched && newVehicleForm.get('model')?.invalid) {
+            <div class="text-warning small mt-2" i18n="@@modelFieldError">
+              A modell megadása kötelező.
+            </div>
+          }
         </div>
       </div>
       <div class="row g-2 mt-2">
@@ -98,25 +129,33 @@
           <label class="form-label" i18n="@@yearLabel">Évjárat</label>
           <input
             class="form-control"
-            name="year"
-            [(ngModel)]="newVehicle.year"
+            formControlName="year"
             type="number"
             min="1970"
             max="2100"
             required
           />
+          @if (newVehicleForm.get('year')?.touched && newVehicleForm.get('year')?.invalid) {
+            <div class="text-warning small mt-2" i18n="@@yearFieldError">
+              Adjon meg egy érvényes évjáratot.
+            </div>
+          }
         </div>
         <div class="col-6">
           <label class="form-label" i18n="@@vinLabel">Alvázszám</label>
           <input
             class="form-control"
-            name="vin"
-            [(ngModel)]="newVehicle.vin"
+            formControlName="vin"
             type="text"
-            placeholder="Alvázszám"
+            placeholder="Példa: Alvázszám"
             i18n-placeholder="@@vinPlaceholder"
             required
           />
+          @if (newVehicleForm.get('vin')?.touched && newVehicleForm.get('vin')?.invalid) {
+            <div class="text-warning small mt-2" i18n="@@vinFieldError">
+              Az alvázszám megadása kötelező.
+            </div>
+          }
         </div>
       </div>
       @if (vehicleMessage$ | async; as vehicleMessage) {

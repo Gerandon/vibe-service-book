@@ -16,6 +16,17 @@
   animation: vehicle-in 0.35s ease;
 }
 
+.make-dropdown {
+  position: absolute;
+  top: calc(100% + 0.25rem);
+  left: 0;
+  right: 0;
+  z-index: 1050;
+  max-height: 220px;
+  overflow-y: auto;
+  background: #fff;
+}
+
 @keyframes vehicle-in {
   from {
     opacity: 0;

@@ -1,59 +1,74 @@
 <div class="card shadow-sm border-0 mb-4">
   <div class="card-body">
     <h3 class="h5 mb-3" i18n="@@logServiceTitle">Szerviz rögzítése</h3>
-    <form (ngSubmit)="addRecord()">
+    <form [formGroup]="recordForm" (ngSubmit)="addRecord()">
       <div class="mb-3">
         <label class="form-label" i18n="@@recordTitleLabel">Megnevezés</label>
         <input
           class="form-control"
-          name="recordTitle"
-          [(ngModel)]="newRecord.title"
+          formControlName="title"
           type="text"
-          placeholder="Olajcsere"
+          placeholder="Példa: Olajcsere"
           i18n-placeholder="@@recordTitlePlaceholder"
           required
         />
+        @if (recordForm.get('title')?.touched && recordForm.get('title')?.invalid) {
+          <div class="text-warning small mt-2" i18n="@@recordTitleError">
+            A megnevezés megadása kötelező.
+          </div>
+        }
       </div>
       <div class="mb-3">
         <label class="form-label" i18n="@@recordDateLabel">Dátum</label>
         <input
           class="form-control"
-          name="recordDate"
-          [(ngModel)]="newRecord.date"
+          formControlName="date"
           type="date"
           required
         />
+        @if (recordForm.get('date')?.touched && recordForm.get('date')?.invalid) {
+          <div class="text-warning small mt-2" i18n="@@recordDateError">
+            A dátum megadása kötelező.
+          </div>
+        }
       </div>
       <div class="row g-2">
         <div class="col-6">
           <label class="form-label" i18n="@@recordOdometerLabel">Kilométeróra (km)</label>
           <input
             class="form-control"
-            name="recordOdometer"
-            [(ngModel)]="newRecord.odometer"
+            formControlName="odometer"
             type="number"
             min="0"
           />
+          @if (recordForm.get('odometer')?.touched && recordForm.get('odometer')?.invalid) {
+            <div class="text-warning small mt-2" i18n="@@recordOdometerError">
+              Adjon meg érvényes kilométeróra értéket.
+            </div>
+          }
         </div>
         <div class="col-6">
           <label class="form-label" i18n="@@recordCostLabel">Költség (HUF)</label>
           <input
             class="form-control"
-            name="recordCost"
-            [(ngModel)]="newRecord.cost"
+            formControlName="cost"
             type="number"
             min="0"
           />
+          @if (recordForm.get('cost')?.touched && recordForm.get('cost')?.invalid) {
+            <div class="text-warning small mt-2" i18n="@@recordCostError">
+              Adjon meg érvényes összeget.
+            </div>
+          }
         </div>
       </div>
       <div class="mt-3">
         <label class="form-label" i18n="@@recordNotesLabel">Megjegyzések</label>
         <textarea
           class="form-control"
-          name="recordNotes"
-          [(ngModel)]="newRecord.notes"
+          formControlName="notes"
           rows="3"
-          placeholder="További részletek"
+          placeholder="Példa: További részletek"
           i18n-placeholder="@@recordNotesPlaceholder"
         ></textarea>
       </div>

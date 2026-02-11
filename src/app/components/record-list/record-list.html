@@ -14,29 +14,133 @@
     </div>
     <div class="record-list">
       @for (record of (records$ | async) ?? []; track record.id) {
-        <div class="record-item border rounded-4 p-3 mb-3">
-          <div class="d-flex justify-content-between align-items-start gap-3">
-            <div>
-              <h4 class="h6 mb-1">{{ record.title }}</h4>
-              <p class="text-muted small mb-1">
-                {{ record.date | date: 'mediumDate' }} - {{ record.odometer }} km
-              </p>
-              <p class="mb-0 small">{{ record.notes }}</p>
+        <div
+          class="record-item border rounded-4 p-3 mb-3"
+          [class.record-item-editing]="editingId === record.id"
+        >
+          @if (editingId === record.id) {
+            <div class="row g-2" [formGroup]="editForm">
+              <div class="col-12">
+                <label class="form-label small" i18n="@@recordTitleLabel">Megnevezés</label>
+                <input
+                  class="form-control"
+                  type="text"
+                  formControlName="title"
+                  placeholder="Példa: Olajcsere"
+                  i18n-placeholder="@@recordTitlePlaceholder"
+                  required
+                />
+                @if (editForm.get('title')?.touched && editForm.get('title')?.invalid) {
+                  <div class="text-warning small mt-2" i18n="@@recordTitleEditError">
+                    A megnevezés megadása kötelező.
+                  </div>
+                }
+              </div>
+              <div class="col-6">
+                <label class="form-label small" i18n="@@recordDateLabel">Dátum</label>
+                <input
+                  class="form-control"
+                  type="date"
+                  formControlName="date"
+                  required
+                />
+                @if (editForm.get('date')?.touched && editForm.get('date')?.invalid) {
+                  <div class="text-warning small mt-2" i18n="@@recordDateEditError">
+                    A dátum megadása kötelező.
+                  </div>
+                }
+              </div>
+              <div class="col-6">
+                <label class="form-label small" i18n="@@recordOdometerLabel">Kilométeróra (km)</label>
+                <input
+                  class="form-control"
+                  type="number"
+                  formControlName="odometer"
+                  min="0"
+                />
+                @if (editForm.get('odometer')?.touched && editForm.get('odometer')?.invalid) {
+                  <div class="text-warning small mt-2" i18n="@@recordOdometerEditError">
+                    Adjon meg érvényes kilométeróra értéket.
+                  </div>
+                }
+              </div>
+              <div class="col-6">
+                <label class="form-label small" i18n="@@recordCostLabel">Költség (HUF)</label>
+                <input
+                  class="form-control"
+                  type="number"
+                  formControlName="cost"
+                  min="0"
+                />
+                @if (editForm.get('cost')?.touched && editForm.get('cost')?.invalid) {
+                  <div class="text-warning small mt-2" i18n="@@recordCostEditError">
+                    Adjon meg érvényes összeget.
+                  </div>
+                }
+              </div>
+              <div class="col-12">
+                <label class="form-label small" i18n="@@recordNotesLabel">Megjegyzések</label>
+                <textarea
+                  class="form-control"
+                  formControlName="notes"
+                  rows="3"
+                  placeholder="Példa: További részletek"
+                  i18n-placeholder="@@recordNotesPlaceholder"
+                ></textarea>
+              </div>
+              <div class="col-12 d-flex justify-content-end gap-2">
+                <button
+                  class="btn btn-outline-secondary btn-sm"
+                  type="button"
+                  (click)="cancelEdit()"
+                  i18n="@@cancelEdit"
+                >
+                  Mégse
+                </button>
+                <button
+                  class="btn btn-dark btn-sm"
+                  type="button"
+                  (click)="saveEdit(record.id)"
+                  i18n="@@saveEdit"
+                >
+                  Mentés
+                </button>
+              </div>
             </div>
-            <div class="text-end">
-              <p class="fw-semibold mb-1">
-                {{ record.cost | currency: 'HUF':'symbol-narrow' }}
-              </p>
-              <button
-                class="btn btn-sm btn-outline-secondary"
-                type="button"
-                (click)="removeRecord(record.id)"
-                i18n="@@removeRecord"
-              >
-                Törlés
-              </button>
+          } @else {
+            <div class="d-flex justify-content-between align-items-start gap-3">
+              <div>
+                <h4 class="h6 mb-1">{{ record.title }}</h4>
+                <p class="text-muted small mb-1">
+                  {{ record.date | date: 'mediumDate' }} - {{ record.odometer }} km
+                </p>
+                <p class="mb-0 small record-notes">{{ record.notes }}</p>
+              </div>
+              <div class="text-end">
+                <p class="fw-semibold mb-1">
+                  {{ record.cost | currency: 'HUF':'symbol-narrow' }}
+                </p>
+                <div class="d-flex justify-content-end gap-2">
+                  <button
+                    class="btn btn-sm btn-outline-dark"
+                    type="button"
+                    (click)="startEdit(record)"
+                    i18n="@@editRecord"
+                  >
+                    Szerkesztés
+                  </button>
+                  <button
+                    class="btn btn-sm btn-outline-secondary"
+                    type="button"
+                    (click)="removeRecord(record.id)"
+                    i18n="@@removeRecord"
+                  >
+                    Törlés
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
+          }
         </div>
       } @empty {
         <div class="text-muted" i18n="@@noRecords">

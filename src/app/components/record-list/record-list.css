@@ -4,6 +4,17 @@
   animation: fade-in 0.5s ease;
 }
 
+.record-notes {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.record-item-editing {
+  border-color: rgba(228, 133, 43, 0.45) !important;
+  box-shadow: 0 10px 24px rgba(228, 133, 43, 0.12);
+  background: rgba(255, 252, 245, 0.9);
+}
+
 @keyframes fade-in {
   from {
     opacity: 0;
