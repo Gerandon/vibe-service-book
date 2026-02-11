@@ -6,7 +6,7 @@
     "start": "ng serve",
     "build": "ng build",
     "build:gh": "ng build --configuration production --base-href /vibe-service-book/",
-    "deploy": "npm run build:gh && npx gh-pages -d dist/szervizkonyv",
+    "deploy": "npm run build:gh && npx gh-pages -d dist/szervizkonyv/browser",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
