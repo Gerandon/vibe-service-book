@@ -1,0 +1,28 @@
+.vehicle-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  margin-top: 6px;
+  background: var(--accent-2);
+  box-shadow: 0 0 0 4px rgba(27, 113, 107, 0.15);
+}
+
+.list-group-item.active .vehicle-dot {
+  background: var(--accent-1);
+  box-shadow: 0 0 0 4px rgba(228, 133, 43, 0.25);
+}
+
+.vehicle-item {
+  animation: vehicle-in 0.35s ease;
+}
+
+@keyframes vehicle-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

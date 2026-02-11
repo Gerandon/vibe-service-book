@@ -1,0 +1,59 @@
+<div class="card shadow-sm border-0">
+  <div class="card-body">
+    <h3 class="h5 mb-3" i18n="@@sharingTitle">Megosztás</h3>
+    <p class="text-muted small mb-3" i18n="@@sharingSubtitle">
+      Ossza meg ezt a járművet más fiókokkal a közös szerkesztéshez.
+    </p>
+    @if (canShareSelected$ | async) {
+      <form class="mb-3" (ngSubmit)="shareVehicle()">
+        <label class="form-label" i18n="@@inviteLabel">Meghívás emailben</label>
+        <div class="d-flex gap-2">
+          <input
+            class="form-control"
+            name="shareEmail"
+            [(ngModel)]="shareEmail"
+            type="email"
+            placeholder="riley@example.com"
+            i18n-placeholder="@@shareEmailPlaceholder"
+          />
+          <button class="btn btn-outline-dark" type="submit" i18n="@@shareButton">
+            Megosztás
+          </button>
+        </div>
+      </form>
+    } @else {
+      <div class="alert alert-light border" role="alert" i18n="@@sharingOwnerOnly">
+        A megosztást csak a jármű tulajdonosa kezelheti.
+      </div>
+    }
+
+    @if (shareMessage$ | async; as shareMessage) {
+      <div class="text-warning small mb-2">{{ shareMessage }}</div>
+    }
+
+    <div class="share-list">
+      @for (user of (sharedUsers$ | async )?? []; track user.id) {
+        <div class="d-flex justify-content-between align-items-center border rounded-4 p-2 mb-2">
+          <div>
+            <p class="mb-0 fw-semibold">{{ user.name }}</p>
+            <p class="mb-0 text-muted small">{{ user.email }}</p>
+          </div>
+          @if (canShareSelected$ | async) {
+            <button
+              class="btn btn-sm btn-outline-secondary"
+              type="button"
+              (click)="removeShare(user.id)"
+              i18n="@@removeShare"
+            >
+              Eltávolítás
+            </button>
+          }
+        </div>
+      } @empty {
+        <div class="text-muted small" i18n="@@noCollaborators">
+          Még nincsenek együttműködők.
+        </div>
+      }
+    </div>
+  </div>
+</div>

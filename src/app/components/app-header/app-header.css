@@ -1,0 +1,5 @@
+.app-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 4vw, 3.6rem);
+  letter-spacing: -0.02em;
+}

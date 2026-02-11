@@ -1,0 +1,28 @@
+<div class="app-shell">
+  <app-header />
+
+  <main class="container pb-5">
+    @if (currentUser$ | async) {
+      <div class="row g-4">
+        <div class="col-12 col-lg-4">
+          <app-vehicle-sidebar />
+        </div>
+        <div class="col-12 col-lg-8">
+          <app-vehicle-detail />
+        </div>
+      </div>
+    } @else {
+      <div class="card shadow-sm border-0">
+        <div class="card-body text-center py-5">
+          <h2 class="h4" i18n="@@dashboardLoginTitle">Jelentkezzen be</h2>
+          <p class="text-muted mb-4" i18n="@@dashboardLoginSubtitle">
+            A szervizkönyv megtekintéséhez bejelentkezés szükséges.
+          </p>
+          <a class="btn btn-dark" routerLink="/login" i18n="@@dashboardLoginCta">
+            Ugrás a bejelentkezéshez
+          </a>
+        </div>
+      </div>
+    }
+  </main>
+</div>

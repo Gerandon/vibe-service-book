@@ -1,0 +1,44 @@
+<header class="container py-4 py-lg-5">
+  <div
+    class="d-flex flex-column flex-lg-row align-items-start align-items-lg-center justify-content-between gap-3"
+  >
+    <div>
+      <p class="text-uppercase text-muted small mb-2" i18n="@@heroKicker">
+        Szervizkönyv központ
+      </p>
+      <h1 class="app-title mb-1">{{ title$ | async }}</h1>
+      <p class="text-muted mb-0" i18n="@@heroSubtitle">
+        Kövesse a szerviztörténetet, dolgozzon együtt megbízható tulajdonosokkal, és tartson
+        minden járművet készenlétben.
+      </p>
+    </div>
+    <div class="d-flex align-items-center gap-3">
+      @if (currentUser$ | async; as currentUser) {
+        <div class="text-end">
+          <p class="fw-semibold mb-0">{{ currentUser.name }}</p>
+          <p class="text-muted small mb-0">{{ currentUser.email }}</p>
+        </div>
+        <button
+          class="btn btn-outline-dark"
+          type="button"
+          (click)="exportPdf()"
+          i18n="@@exportPdf"
+        >
+          PDF export
+        </button>
+        <button
+          class="btn btn-outline-dark"
+          type="button"
+          (click)="logout()"
+          i18n="@@logout"
+        >
+          Kijelentkezés
+        </button>
+      } @else {
+        <span class="badge rounded-pill text-bg-warning px-3 py-2" i18n="@@demoReady">
+          Demó készen
+        </span>
+      }
+    </div>
+  </div>
+</header>

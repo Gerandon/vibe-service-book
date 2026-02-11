@@ -1,0 +1,17 @@
+<div class="toast-container position-fixed top-0 start-50 translate-middle-x p-3">
+  @if (notifications$ | async; as notifications) {
+    @for (notification of notifications; track notification.id) {
+      <div class="toast show align-items-center border-0 mb-2" [ngClass]="toastClass(notification)">
+        <div class="d-flex">
+          <div class="toast-body">{{ notification.message }}</div>
+          <button
+            type="button"
+            class="btn-close btn-close-white me-2 m-auto"
+            aria-label="Close"
+            (click)="dismiss(notification.id)"
+          ></button>
+        </div>
+      </div>
+    }
+  }
+</div>

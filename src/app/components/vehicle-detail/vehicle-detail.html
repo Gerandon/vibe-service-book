@@ -1,0 +1,45 @@
+@if (selectedVehicle$ | async; as selectedVehicle) {
+  <div class="card shadow-sm border-0 mb-4">
+    <div class="card-body">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3">
+        <div>
+          <h2 class="h4 mb-1">{{ selectedVehicle.nickname }}</h2>
+          <p class="text-muted mb-2">
+            {{ selectedVehicle.year }} {{ selectedVehicle.make }} {{ selectedVehicle.model }}
+          </p>
+          <p class="small text-muted mb-0" i18n="@@vinDetail">
+            Alvázszám {{ selectedVehicle.vin }}
+          </p>
+        </div>
+        <div class="text-md-end">
+          <p class="small text-uppercase text-muted mb-1" i18n="@@ownerLabel">Tulajdonos</p>
+          <p class="fw-semibold mb-0">{{ selectedOwnerName$ | async }}</p>
+          <p class="text-muted small mb-0" i18n="@@collaboratorsCount">
+            Közreműködők: {{ (sharedUsers$ | async)?.length ?? 0 }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-12 col-xl-7">
+      <app-record-list />
+    </div>
+    <div class="col-12 col-xl-5">
+      <app-record-form />
+      <div class="mt-4">
+        <app-sharing-panel />
+      </div>
+    </div>
+  </div>
+} @else {
+  <div class="card shadow-sm border-0">
+    <div class="card-body text-center py-5">
+      <h2 class="h4" i18n="@@selectVehicleTitle">Válasszon járművet</h2>
+      <p class="text-muted mb-0" i18n="@@selectVehicleSubtitle">
+        Válasszon egy járművet a listából, hogy lássa a szervizeket és a megosztást.
+      </p>
+    </div>
+  </div>
+}

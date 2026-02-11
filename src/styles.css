@@ -1,0 +1,80 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+:root {
+  color-scheme: light;
+  --font-body: 'Space Grotesk', 'Trebuchet MS', sans-serif;
+  --font-display: 'Fraunces', 'Times New Roman', serif;
+  --ink-1: #112a2f;
+  --ink-2: #3d5b60;
+  --accent-1: #e4852b;
+  --accent-2: #1b716b;
+  --bg-1: #f6f1ea;
+  --bg-2: #e8efe8;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--ink-1);
+  margin: 0;
+  background: radial-gradient(circle at top left, rgba(228, 133, 43, 0.15), transparent 55%),
+    radial-gradient(circle at 20% 80%, rgba(27, 113, 107, 0.2), transparent 60%),
+    linear-gradient(120deg, var(--bg-1), var(--bg-2));
+  min-height: 100vh;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+  color: var(--ink-1);
+}
+
+p,
+label,
+input,
+textarea,
+button {
+  font-family: inherit;
+}
+
+.card {
+  border-radius: 1.25rem;
+}
+
+.btn {
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.btn-outline-dark {
+  border-width: 2px;
+}
+
+.form-control,
+textarea {
+  border-radius: 0.85rem;
+}
+
+.list-group-item {
+  border: 0;
+  border-radius: 1rem;
+  margin-bottom: 0.5rem;
+  background: rgba(255, 255, 255, 0.86);
+}
+
+.list-group-item.active {
+  color: var(--ink-1);
+  background: rgba(228, 133, 43, 0.2);
+}
+
+.badge {
+  font-weight: 600;
+}
+
+.alert-light {
+  background: rgba(255, 255, 255, 0.7);
+}

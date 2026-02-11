@@ -1,0 +1,14 @@
+.record-item {
+  background: rgba(255, 255, 255, 0.8);
+  border-color: rgba(18, 64, 70, 0.12) !important;
+  animation: fade-in 0.5s ease;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

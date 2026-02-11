@@ -1,0 +1,130 @@
+<div class="card shadow-sm border-0 mb-4">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2 class="h5 mb-0" i18n="@@vehiclesTitle">Járművek</h2>
+      <span class="text-muted small" i18n="@@vehiclesTotal">
+        Összesen: {{ (vehicles$ | async)?.length ?? 0 }}
+      </span>
+    </div>
+    <div class="list-group list-group-flush">
+      @if (currentUser$ | async; as currentUser) {
+        @for (vehicle of (vehicles$ | async) ?? []; track vehicle.id) {
+        <button
+          type="button"
+          class="list-group-item list-group-item-action d-flex align-items-start gap-3 vehicle-item"
+          [class.active]="(selectedVehicleId$ | async) === vehicle.id"
+          (click)="selectVehicle(vehicle.id)"
+        >
+            <div class="vehicle-dot"></div>
+            <div class="flex-grow-1">
+              <div class="d-flex justify-content-between align-items-center gap-2">
+                <h3 class="h6 mb-0">{{ vehicle.nickname }}</h3>
+                <div class="d-flex align-items-center gap-2">
+                  <span class="badge rounded-pill text-bg-light border">
+                    @if (vehicle.ownerId === currentUser.id) {
+                      <span i18n="@@badgeOwner">Tulajdonos</span>
+                    } @else {
+                      <span i18n="@@badgeShared">Megosztott</span>
+                    }
+                  </span>
+                  @if (vehicle.ownerId === currentUser.id) {
+                    <button
+                      class="btn btn-sm btn-outline-secondary"
+                      type="button"
+                      (click)="removeVehicle(vehicle.id); $event.stopPropagation()"
+                      i18n="@@removeVehicle"
+                    >
+                      Törlés
+                    </button>
+                  }
+                </div>
+              </div>
+              <p class="text-muted small mb-0">
+                {{ vehicle.year }} {{ vehicle.make }} {{ vehicle.model }}
+              </p>
+            </div>
+          </button>
+        } @empty {
+          <div class="text-muted small" i18n="@@noVehicles">Még nincs jármű.</div>
+        }
+      }
+    </div>
+  </div>
+</div>
+
+<div class="card shadow-sm border-0">
+  <div class="card-body">
+    <h2 class="h5 mb-3" i18n="@@addVehicleTitle">Jármű hozzáadása</h2>
+    <form (ngSubmit)="addVehicle()">
+      <div class="mb-3">
+        <label class="form-label" i18n="@@nicknameLabel">Becenév</label>
+        <input
+          class="form-control"
+          name="nickname"
+          [(ngModel)]="newVehicle.nickname"
+          type="text"
+          placeholder="Hétvégi túra"
+          i18n-placeholder="@@nicknamePlaceholder"
+        />
+      </div>
+      <div class="row g-2">
+        <div class="col-6">
+          <label class="form-label" i18n="@@makeLabel">Márka</label>
+          <input
+            class="form-control"
+            name="make"
+            [(ngModel)]="newVehicle.make"
+            type="text"
+            placeholder="Mazda"
+            i18n-placeholder="@@makePlaceholder"
+            required
+          />
+        </div>
+        <div class="col-6">
+          <label class="form-label" i18n="@@modelLabel">Modell</label>
+          <input
+            class="form-control"
+            name="model"
+            [(ngModel)]="newVehicle.model"
+            type="text"
+            placeholder="CX-5"
+            i18n-placeholder="@@modelPlaceholder"
+            required
+          />
+        </div>
+      </div>
+      <div class="row g-2 mt-2">
+        <div class="col-6">
+          <label class="form-label" i18n="@@yearLabel">Évjárat</label>
+          <input
+            class="form-control"
+            name="year"
+            [(ngModel)]="newVehicle.year"
+            type="number"
+            min="1970"
+            max="2100"
+            required
+          />
+        </div>
+        <div class="col-6">
+          <label class="form-label" i18n="@@vinLabel">Alvázszám</label>
+          <input
+            class="form-control"
+            name="vin"
+            [(ngModel)]="newVehicle.vin"
+            type="text"
+            placeholder="Alvázszám"
+            i18n-placeholder="@@vinPlaceholder"
+            required
+          />
+        </div>
+      </div>
+      @if (vehicleMessage$ | async; as vehicleMessage) {
+        <div class="text-warning small mt-2">{{ vehicleMessage }}</div>
+      }
+      <button class="btn btn-dark w-100 mt-3" type="submit" i18n="@@saveVehicle">
+        Jármű mentése
+      </button>
+    </form>
+  </div>
+</div>
