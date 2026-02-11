@@ -17,6 +17,14 @@ npm install
 npm start
 ```
 
+## GitHub Pages
+
+```sh
+npm run deploy
+```
+
+This publishes the production build to GitHub Pages under `/vibe-service-book/`.
+
 ## Routes
 
 - `/login` - authentication
